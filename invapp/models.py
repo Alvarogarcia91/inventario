@@ -75,19 +75,20 @@ class Block_de_espuma(models.Model):
     tipo_de_unidad = models.ForeignKey(Tipo_de_unidad, on_delete = models.PROTECT)
     #set default to normal
     lote = models.ForeignKey(Lote, on_delete = models.PROTECT)
-    defecto = models.ForeignKey(Defecto, on_delete = models.PROTECT)
+    defecto = models.ForeignKey(Defecto, on_delete = models.PROTECT,blank = True, null=True)
     desperdicio = models.BooleanField()
-    curado = models.BooleanField()
     # MEDIDAS
     largo = models.DecimalField(max_digits=8, decimal_places=4)
-    largo_curado = models.DecimalField(max_digits=8, decimal_places=4)
+    largo_curado = models.DecimalField(max_digits=8, decimal_places=4,blank = True, null=True)
     ancho = models.DecimalField(max_digits=8, decimal_places=4)
-    ancho_curado = models.DecimalField(max_digits=8, decimal_places=4)
+    ancho_curado = models.DecimalField(max_digits=8, decimal_places=4,blank = True, null=True)
     #blanck = true
-    alto = models.DecimalField(max_digits=8, decimal_places=4, null=True)
-    alto_curado = models.DecimalField(max_digits=8, decimal_places=4, null=True)
+    alto = models.DecimalField(max_digits=8, decimal_places=4,blank = True, null=True)
+    alto_curado = models.DecimalField(max_digits=8, decimal_places=4,blank = True, null=True)
     flujo_de_aire = models.DecimalField(max_digits=8,decimal_places=4)
     peso = models.DecimalField(max_digits=8,decimal_places=4)
+    curado = models.BooleanField()
+    existencia = models.BooleanField()
     def __str__(self):
         show = "" + str(self.numero_de_block) + str(self.figura) + str(self.tipo_de_espuma)
         return show
