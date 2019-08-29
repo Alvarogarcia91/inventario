@@ -1,20 +1,21 @@
 from django.db import models
 
-class Lote(models.model):
+class Lote(models.Model):
     creado = models.DateTimeField(auto_now_add=True)
     actualizado = models.DateTimeField(auto_now=True)
     numero_de_lote = models.CharField(max_length=100)
     def __str__(self):
         return self.numero_de_lote
 
-class Tipo_de_espuma(models.model):
+class Tipo_de_espuma(models.Model):
+    #agregar fields de medidas chartype
     creado = models.DateTimeField(auto_now_add=True)
     actualizado = models.DateTimeField(auto_now=True)
-    modelo = models.CharField()
+    modelo = models.CharField(max_length =100)
     especial = models.BooleanField()
     linea = models.BooleanField()
     def __str__(self):
-        return self.modelo
+        return self.modelo  
 
 class Tipo_de_unidad(models.Model):
     creado = models.DateTimeField(auto_now_add=True)
@@ -56,25 +57,25 @@ class Figura(models.Model):
 class Maquina(models.Model):
     creado = models.DateTimeField(auto_now_add=True)
     actualizado = models.DateTimeField(auto_now=True)
-    figura = models.ForeignKey(Figura)
+    figura = models.ForeignKey(Figura, on_delete = models.PROTECT)
     modelo = models.CharField(max_length=200)
     numero = models.IntegerField()
     descripcion = models.CharField(max_length=200)
     ubicacion = models.CharField(max_length=200)
     def __str__(self):
-        return self.descripcion
+        return self.modelo
 
 class Block_de_espuma(models.Model):
     creado = models.DateTimeField(auto_now_add=True)
     actualizado = models.DateTimeField(auto_now=True)
-    figura = models.ForeignKey(Figura)
-    tipo_de_espuma = models.ForeignKey(Tipo_de_espuma)
-    maquina = models.ForeignKey(Maquina)
+    figura = models.ForeignKey(Figura, on_delete = models.PROTECT)
+    tipo_de_espuma = models.ForeignKey(Tipo_de_espuma, on_delete = models.PROTECT)
+    maquina = models.ForeignKey(Maquina, on_delete = models.PROTECT)
     numero_de_block = models.IntegerField('numero de block')
-    tipo_de_unidad = models.ForeignKey(Tipo_de_unidad)
+    tipo_de_unidad = models.ForeignKey(Tipo_de_unidad, on_delete = models.PROTECT)
     #set default to normal
-    lote = models.ForeignKey(Lote)
-    defecto = models.ForeignKey(Question)
+    lote = models.ForeignKey(Lote, on_delete = models.PROTECT)
+    defecto = models.ForeignKey(Defecto, on_delete = models.PROTECT)
     desperdicio = models.BooleanField()
     curado = models.BooleanField()
     # MEDIDAS
@@ -82,9 +83,11 @@ class Block_de_espuma(models.Model):
     largo_curado = models.DecimalField(max_digits=8, decimal_places=4)
     ancho = models.DecimalField(max_digits=8, decimal_places=4)
     ancho_curado = models.DecimalField(max_digits=8, decimal_places=4)
+    #blanck = true
     alto = models.DecimalField(max_digits=8, decimal_places=4, null=True)
     alto_curado = models.DecimalField(max_digits=8, decimal_places=4, null=True)
     flujo_de_aire = models.DecimalField(max_digits=8,decimal_places=4)
     peso = models.DecimalField(max_digits=8,decimal_places=4)
     def __str__(self):
-        return (self.numero_de_block, self.figura, self.tipo_de_espuma)
+        show = "" + str(self.numero_de_block) + str(self.figura) + str(self.tipo_de_espuma)
+        return show
